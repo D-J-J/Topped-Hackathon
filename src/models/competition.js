@@ -4,8 +4,8 @@ var statusEnum = Object.freeze({"active":1, "completed":2, "not_started":3})
 
 export default class Competition {
 
-    constructor(name, desc, startDate, endDate, problems, fee, admins) {
-        this.id; // generate
+    constructor(id, name, desc, startDate, endDate, problems, fee, admins) {
+        this.id = id;
         this.name = name;
         this.desc = desc;
         this.startDate = startDate;
