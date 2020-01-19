@@ -5,6 +5,7 @@ import NavigationBar from "../NavigationBar";
 import LandingPage from "../Landing";
 import CompetitionPage from "../Competition";
 import NewCompetitionPage from "../NewCompetition";
+import LeaderboardPage from "../Leaderboard";
 import SignUpPage from "../SignUp";
 import SignInPage from "../SignIn";
 import PasswordForgetPage from "../PasswordForget";
@@ -23,7 +24,7 @@ const App = () => (
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
             <Route exact path={ROUTES.COMPETITION} component={CompetitionPage} />
             <Route exact path={ROUTES.NEWCOMP} component={NewCompetitionPage} />
-
+            <Route exact path={ROUTES.LEADERBOARD} component={LeaderboardPage} />
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route

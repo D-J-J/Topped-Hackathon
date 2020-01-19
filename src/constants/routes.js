@@ -5,4 +5,5 @@ export const HOME = '/home';
 export const ACCOUNT = '/account';
 export const PASSWORD_FORGET = '/pw-forget';
 export const COMPETITION = '/competition';
-export const NEWCOMP = '/newcompetition'
+export const NEWCOMP = '/newcompetition';
+export const LEADERBOARD = '/leaderboard';
