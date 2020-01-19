@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Navigation from "../Navigation";
 import LandingPage from "../Landing";
+import CompetitionPage from "../Competition";
+import NewCompetitionPage from "../NewCompetition";
 import SignUpPage from "../SignUp";
 import SignInPage from "../SignIn";
 import PasswordForgetPage from "../PasswordForget";
@@ -20,6 +22,9 @@ const App = () => (
             <hr />
 
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
+            <Route exact path={ROUTES.COMPETITION} component={CompetitionPage} />
+            <Route exact path={ROUTES.NEWCOMP} component={NewCompetitionPage} />
+
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route
