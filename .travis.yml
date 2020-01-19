@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - 12.14.1
+warnings_are_errors: false
 branches:
   only:
     - master
@@ -15,5 +16,6 @@ script:
   - npm run build
 deploy:
   provider: firebase
+  skip_cleanup: true
   token:
     secure: $FIREBASE_HOSTING_KEY
