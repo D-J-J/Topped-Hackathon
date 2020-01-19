@@ -10,6 +10,13 @@ const firebaseConfig = {
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
+const COMPETITIONS_COLLECTION = "competitions";
+
+// const testComp = {
+//     id: "KQ8I9V4DROo05ALQzk1p",
+//     data: "cookiez",
+//     data2: "moar cookiez"
+// }
 
 class Firebase {
     constructor() {
@@ -18,7 +25,22 @@ class Firebase {
         this.auth = app.auth();
         this.firestore = app.firestore();
 
-        this.doInsertCompetition("newComp", "data2", 2);
+        // this.doInsertCompetition({
+        //     data1: "Test1",
+        //     data2: "Test2"
+        // });
+
+        // this.doUpdateCompetition({
+        //     id: "h3HAQ4sjG7SsOiBZtkhY",
+        //     data1: "Hello!",
+        //     data2: "Hehehe"
+        // });
+
+        // this.doDeleteCompetition({
+        //     id: "h3HAQ4sjG7SsOiBZtkhY",
+        //     data1: "Hello!",
+        //     data2: "Hehehe"
+        // });
     }
 
     doCreateUserWithEmailAndPassword = (email, password) =>
@@ -35,20 +57,38 @@ class Firebase {
         this.auth.currentUser.updatePassword(password);
 
     /**
-     * @param path The path: collection/path/collection/path/...
+     * Creates a new competition entry or updates an existing one
+     * @param competition The competition object to create/update
      */
-    doInsertCompetition = (name, data1, data2) => {
-        let competitionRef = this.firestore.collection("competitions").doc();
+    doInsertCompetition = (competition) => {
+        let competitionRef = this.firestore.collection(COMPETITIONS_COLLECTION).doc();
         competitionRef.set({
-            id: competitionRef.id,
-            test1: "Test1",
-            test2: "Test2"
+            ...competition,
+            id: competitionRef.id
         });
-        console.log(competitionRef.id)
+        // console.log(competitionRef.id)
         // this.firestore.doc('competitions/' + name).set({
         //     data1: data1,
         //     data2: data2
         // });
+    }
+
+    /**
+     * Updates the competition object from firebase
+     * @param competition
+     */
+    doUpdateCompetition = (competition) => {
+        let competitionRef = this.firestore.collection(COMPETITIONS_COLLECTION).doc(competition.id);
+        competitionRef.set(competition);
+    }
+
+    /**
+     * Deletes the competition object from firebase
+     * @param competition The competition object to delete
+     */
+    doDeleteCompetition = (competition) => {
+        let competitionRef = this.firestore.collection(COMPETITIONS_COLLECTION).doc(competition.id);
+        competitionRef.delete();
     }
 }
 
