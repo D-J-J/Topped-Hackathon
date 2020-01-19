@@ -1,107 +1,158 @@
-import React from 'react';
+import React, { Component } from "react";
 import 'date-fns';
 import TextField from '@material-ui/core/TextField';
-import {
-	makeStyles
-} from '@material-ui/core/styles';
+// import {
+// 	makeStyles
+// } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DateFnsUtils from '@date-io/date-fns';
 import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { withRouter } from "react-router-dom";
+import { withFirebase } from "../Firebase";
+import { compose } from "recompose";
 
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		'& .MuiTextField-root': {
-			margin: theme.spacing(2,3),
-            width: 200,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center"
-        },
-	},
-}));
+// const useStyles = makeStyles(theme => ({
+// 	root: {
+// 		'& .MuiTextField-root': {
+// 			margin: theme.spacing(2,3),
+//             width: 200,
+//             display: "flex",
+//             flexDirection: "column",
+//             justifyContent: "center"
+//         },
+// 	},
+// }));
 
-export default function NewCompetition() {
-	const classes = useStyles();
-	const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-	const handleDateChange = date => {
-		setSelectedDate(date);
-    };
-    
-    const handleFormSubmission = event => {
-        var compName = document.getElementById("compName").value;
-        var compDesc = document.getElementById("compDesc").value;
-        var compStart = document.getElementById("compStart").value;
-        var compEnd = document.getElementById("compEnd").value;
-        var compProblems = document.getElementById("compProblems").value;
-        console.log(compName, compDesc, compStart, compEnd, compProblems);
-        event.preventDefault()
-      }
-
-	return ( 
+const SubmissionPage = () => (
     <div>
-        <div className={classes.root}>
-            <TextField
-                required
-                id="compName"
-                label="Competition Name"
-                helperText="Competition Name"
-                variant="outlined"
-                />
-            <TextField
-                required
-                id="compDesc"
-                label="Description"
-                helperText="Description"
-                variant="outlined"
-                />
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="compStart"
-                label="Start Date"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                'aria-label': 'change date',
-                }}
-                />
-                <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="compEnd"
-                label="End Date"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                'aria-label': 'change date',
-                }}
-                />
-            </MuiPickersUtilsProvider>
-            <TextField
-                required
-                id="compProblems"
-                label="# Problems"
-                helperText="# Problems"
-                variant="outlined"
-                />
-            <Button 
-                variant="outlined"
-                id="compSubmit"
-                type="submit"
-                onClick={handleFormSubmission}>
-                    Submit 
-            </Button>
-        </div>
+        <h1>Submit a new Competition</h1>
+        <SubmissionForm />
     </div>
-	);
+);
+
+const INITIAL_STATE = {
+    compName: "",
+    compDesc: "",
+    compStart: new Date(),
+    compEnd: new Date(),
+    compProblems: null,
+    selectedDate: null,
+    error: null
+};
+
+class SubmissionFormBase extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { ...INITIAL_STATE };
+    }
+            
+    onSubmit = event => {
+        const { compName, compDesc, compStart, compEnd,compProblems } = this.state;
+        //Do checks here and submit to firebase.\
+        console.log(compName, compDesc, compStart, compEnd, compProblems);
+        event.preventDefault();
+    };
+
+    onChange = event => {
+        console.log(event.target.id);
+        this.setState({ [event.target.id]: event.target.value});
+    };
+
+    onChangeDateStart = date => {
+        this.setState({ compStart: date});
+    };
+
+    onChangeDateEnd = date => {
+        this.setState({ compEnd: date});
+    };
+
+
+    render() {
+        const { compName, compDesc, compStart, compEnd,compProblems, error } = this.state;            
+        const isInvalid = compName === "" || compDesc === "" || compStart === "" || compEnd === "" || compProblems === "";
+        
+        const handleDateChange = date => {
+            this.setSelectedDate(date);
+        };
+
+        return (
+            <div>
+                <TextField
+                    required
+                    id="compName"
+                    label="Competition Name"
+                    value={compName}
+                    onChange={this.onChange}
+                    variant="outlined"
+                    />
+                <TextField
+                    required
+                    id="compDesc"
+                    label="Description"
+                    value={compDesc}
+                    onChange={this.onChange}
+                    variant="outlined"
+                    />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    value={compStart}
+                    onChange={this.onChangeDateStart}
+                    id="compStart"
+                    label="Start Date"
+                    KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                    }}
+                    />
+                    <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="compEnd"
+                    value={compEnd}
+                    onChange={this.onChangeDateEnd}
+                    label="End Date"
+                    KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                    }}
+                    />
+                </MuiPickersUtilsProvider>
+                <TextField
+                    required
+                    id="compProblems"
+                    label="# Problems"
+                    value={compProblems}
+                    onChange={this.onChange}
+                    helperText="# Problems"
+                    variant="outlined"
+                    />
+                <Button 
+                    variant="outlined"
+                    id="compSubmit"
+                    type="submit"
+                    disabled={isInvalid}
+                    onClick={this.onSubmit}>
+                        Submit 
+                </Button>
+            </div>
+        );
+    }
 }
+
+const SubmissionForm = compose(
+    withRouter,
+    withFirebase
+)(SubmissionFormBase);
+
+export default SubmissionPage;
+
+
+export { SubmissionForm };
