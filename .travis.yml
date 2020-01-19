@@ -16,6 +16,6 @@ script:
   - npm run build
 deploy:
   provider: firebase
-  skip_cleanup: true
+  cleanup: false
   token:
     secure: $FIREBASE_HOSTING_KEY
