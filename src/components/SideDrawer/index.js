@@ -72,7 +72,9 @@ export default function SwipeableTemporaryDrawer() {
                 <Collapse style={{ paddingLeft: '24px' }} in={openNested} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                         <ListItem button className={classes.nested}>
-                            <ListItemText onClick={toggleDrawer(side, false)} primary="ALL ACTIVE" />
+                            <Link to={ROUTES.LANDING}>
+                                <ListItemText onClick={toggleDrawer(side, false)} primary="ALL ACTIVE" />
+                            </Link>
                         </ListItem>
                         <ListItem button className={classes.nested}>
                             <ListItemText onClick={toggleDrawer(side, false)} primary="YOUR COMPETITIONS" />
