@@ -11,9 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Fab from '@material-ui/core/Fab';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-
-
+import BookmarkIcon from '@material-ui/icons/Bookmark'
 
 const useStyles = makeStyles(theme => ({
   card: {
