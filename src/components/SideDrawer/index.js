@@ -1,20 +1,21 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import Button from  '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import { Link } from "react-router-dom";
 import SignOutButton from "../SignOut";
 import * as ROUTES from "../../constants/routes";
-
 import { AuthUserContext } from "../Session";
 
 const useStyles = makeStyles({
@@ -26,26 +27,17 @@ const useStyles = makeStyles({
     },
 });
 
-const Authenticated = () => (
-    <div>  
-        <SignOutButton />
-    </div>
-)
-
-const NotAuthenticated = () => (
-    <div>
-        <Link to={ROUTES.SIGN_IN}>
-            <Button>Sign In</Button>
-        </Link>
-    </div>
-)
-
-
 export default function SwipeableTemporaryDrawer() {
     const classes = useStyles();
+
+    const [openNested, setOpenNested] = React.useState(true);
     const [state, setState] = React.useState({
         left: false
     });
+
+    const handleClick = () => {
+        setOpenNested(!openNested);
+    };
 
     const toggleDrawer = (side, open) => event => {
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -59,26 +51,61 @@ export default function SwipeableTemporaryDrawer() {
         <div
             className={classes.list}
             role="presentation"
-            onClick={toggleDrawer(side, false)}
-            onKeyDown={toggleDrawer(side, false)}
         >
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+            <List
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Topped
+                    </ListSubheader>
+                }
+                className={classes.root}
+            >
+                <ListItem button>
+                    <ListItemText onClick={toggleDrawer(side, false)} primary="PROFILE" />
+                </ListItem>
+                <ListItem button onClick={handleClick}>
+                    <ListItemText primary="COMPETITIONS" />
+                    {openNested ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse style={{ paddingLeft: '24px' }} in={openNested} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItem button className={classes.nested}>
+                            <ListItemText onClick={toggleDrawer(side, false)} primary="ALL ACTIVE" />
+                        </ListItem>
+                        <ListItem button className={classes.nested}>
+                            <ListItemText onClick={toggleDrawer(side, false)} primary="YOUR COMPETITIONS" />
+                        </ListItem>
+                        <ListItem button className={classes.nested}>
+                            <ListItemText onClick={toggleDrawer(side, false)} primary="PREVIOUS" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+                <ListItem button>
+                    <ListItemText onClick={toggleDrawer(side, false)} primary="LEADERBOARDS" />
+                </ListItem>
             </List>
 
-            <AuthUserContext.Consumer>
-                { authUser =>
-                    authUser ? <Authenticated /> : <NotAuthenticated />
+            {/* TODO: Move text to bottom and take outside of button */}
+            <AuthUserContext.Consumer >
+                {authUser =>
+                    authUser ?
+                        <ListItem button onClick={toggleDrawer(side, false)}>
+                            <SignOutButton />
+                        </ListItem>
+                        :
+                        <ListItem button onClick={toggleDrawer(side, false)}>
+                            <Link to={ROUTES.SIGN_IN}>
+                                <Button >Sign In</Button>
+                            </Link>
+                        </ListItem>
                 }
-                
+
             </AuthUserContext.Consumer>
         </div>
     );
+
     return (
         <div>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer('left', true)} >
