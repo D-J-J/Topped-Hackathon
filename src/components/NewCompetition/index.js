@@ -40,8 +40,7 @@ const INITIAL_STATE = {
     compStart: new Date(),
     compEnd: new Date(),
     compProblems: null,
-    selectedDate: null,
-    error: null
+    selectedDate: null
 };
 
 class SubmissionFormBase extends Component {
@@ -72,12 +71,8 @@ class SubmissionFormBase extends Component {
 
 
     render() {
-        const { compName, compDesc, compStart, compEnd,compProblems, error } = this.state;            
+        const { compName, compDesc, compStart, compEnd,compProblems} = this.state;            
         const isInvalid = compName === "" || compDesc === "" || compStart === "" || compEnd === "" || compProblems === "";
-        
-        const handleDateChange = date => {
-            this.setSelectedDate(date);
-        };
 
         return (
             <div>
