@@ -17,11 +17,11 @@ for (var i = 0; i < 2; i++) {
 }
 
 let users = [];
-for (var i = 1; i < 5; i++) {
+for (var j = 1; j< 5; j++) {
     users.push({
-        id: i,
-        name: "Darren " + i,
-        placement: i,
+        id: j,
+        name: "Darren " + j,
+        placement: j,
     });
 }
 

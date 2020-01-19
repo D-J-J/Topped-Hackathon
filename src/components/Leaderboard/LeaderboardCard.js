@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
@@ -28,7 +28,7 @@ export default function LeaderboardCard(props) {
     const classes = useStyles();
 
     const handleProfileClick = () => {
-        alert('opening profile of '+ `${props.name}`);
+        alert(`${props.name}`);
     };
 
     return (
