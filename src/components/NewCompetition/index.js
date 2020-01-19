@@ -13,6 +13,7 @@ import {
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import { compose } from "recompose";
+import Competition from "../../models/competition";
 
 
 // const useStyles = makeStyles(theme => ({
@@ -50,8 +51,10 @@ class SubmissionFormBase extends Component {
     }
             
     onSubmit = event => {
-        const { compName, compDesc, compStart, compEnd,compProblems } = this.state;
+        const { compName, compDesc, compStart, compEnd, compProblems } = this.state;
         //Do checks here and submit to firebase.\
+        this.props.firebase
+            .doInsertCompetition(new Competition("id", compName, compDesc, compStart, compEnd, compProblems, 0, ""));
         console.log(compName, compDesc, compStart, compEnd, compProblems);
         event.preventDefault();
     };
@@ -128,6 +131,7 @@ class SubmissionFormBase extends Component {
                     onChange={this.onChange}
                     helperText="# Problems"
                     variant="outlined"
+                    type="number"
                     />
                 <Button 
                     variant="outlined"

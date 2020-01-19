@@ -17,7 +17,6 @@ export default class Competition {
         }else{
             this.status = statusEnum.not_started;
         }
-        this.admins = admins;   
-      
+        this.admins = admins;
     }
   }
