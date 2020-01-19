@@ -126,7 +126,6 @@ class SubmissionFormBase extends Component {
                 <TextField
                     required
                     id="compProblems"
-                    label="# Problems"
                     value={compProblems}
                     onChange={this.onChange}
                     helperText="# Problems"
