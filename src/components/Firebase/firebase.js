@@ -104,7 +104,7 @@ class Firebase {
      */
     receiveCompetitionUpdates = (callback) => {
         let query = this.firestore.collection(COMPETITIONS_COLLECTION);
-        let observer = query.onSnapshot(querySnapshot => {
+        query.onSnapshot(querySnapshot => {
             // console.log(querySnapshot)
             console.log(`Received query snapshot of size ${querySnapshot.size}`);
             // querySnapshot.forEach(doc => {
