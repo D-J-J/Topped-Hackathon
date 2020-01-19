@@ -1,4 +1,3 @@
-import React from 'react';
 var currentDate = new Date().toJSON();
 var statusEnum = Object.freeze({"active":1, "completed":2, "not_started":3})
 

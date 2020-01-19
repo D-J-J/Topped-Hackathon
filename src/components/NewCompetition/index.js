@@ -4,12 +4,10 @@ import TextField from '@material-ui/core/TextField';
 import {
 	makeStyles
 } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import DateFnsUtils from '@date-io/date-fns';
 import {
 	MuiPickersUtilsProvider,
-	KeyboardTimePicker,
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
 
@@ -105,7 +103,5 @@ export default function NewCompetition() {
             </Button>
         </div>
     </div>
-    
 	);
-
 }
