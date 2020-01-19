@@ -25,6 +25,8 @@ class Firebase {
         this.auth = app.auth();
         this.firestore = app.firestore();
 
+        // console.log(this.receiveCompetitionUpdates(this.testCallback));
+
         // this.doInsertCompetition({
         //     data1: "Test1",
         //     data2: "Test2"
@@ -41,6 +43,10 @@ class Firebase {
         //     data1: "Hello!",
         //     data2: "Hehehe"
         // });
+    }
+
+    testCallback = (result) => {
+        console.log(result);
     }
 
     doCreateUserWithEmailAndPassword = (email, password) =>
@@ -89,6 +95,26 @@ class Firebase {
     doDeleteCompetition = (competition) => {
         let competitionRef = this.firestore.collection(COMPETITIONS_COLLECTION).doc(competition.id);
         competitionRef.delete();
+    }
+
+    /**
+     * Gets all the documentation in the specified competitions collection
+     * @param callback The callback when the competitions collection is updated (returns the querySnapshot). Obtain
+     * data by iterating through snapshot and calling .data().
+     */
+    receiveCompetitionUpdates = (callback) => {
+        let query = this.firestore.collection(COMPETITIONS_COLLECTION);
+        let observer = query.onSnapshot(querySnapshot => {
+            // console.log(querySnapshot)
+            console.log(`Received query snapshot of size ${querySnapshot.size}`);
+            // querySnapshot.forEach(doc => {
+            //     console.log(doc.data())
+            // })
+            callback(querySnapshot);
+        }, err => {
+            console.log(`Encountered error: ${err}`);
+            callback(null);
+        })
     }
 }
 
